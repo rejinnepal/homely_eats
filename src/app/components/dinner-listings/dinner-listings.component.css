@@ -1,0 +1,260 @@
+.dinner-listings-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filters {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.dinner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.dinner-card {
+  position: relative;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.dinner-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.dinner-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.dinner-card:hover img {
+  transform: scale(1.05);
+}
+
+.dinner-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.dinner-info h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 1.3em;
+}
+
+.dinner-title {
+  color: #2196f3;
+  font-size: 1.3em;
+  font-weight: 600;
+  transition: color 0.3s;
+  display: block;
+}
+
+.dinner-card:hover .dinner-title {
+  color: #1976d2;
+}
+
+.host {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 12px;
+  font-size: 0.95em;
+}
+
+.description {
+  color: #444;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  flex-grow: 1;
+  font-size: 0.95em;
+}
+
+.location {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s;
+}
+
+.dinner-card:hover .location {
+  background: #e8f5e9;
+}
+
+.location p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.menu-preview {
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.dinner-card:hover .menu-preview {
+  background: #e3f2fd;
+}
+
+.menu-preview h4 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+.menu-preview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-preview li {
+  color: #666;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  position: relative;
+  padding-left: 18px;
+}
+
+.menu-preview li:before {
+  content: "•";
+  color: #2196f3;
+  position: absolute;
+  left: 0;
+  font-size: 1.2em;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #555;
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.dinner-card:hover .details {
+  background: #e8f5e9;
+}
+
+.date, .time {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.price {
+  font-weight: bold;
+  color: #2ecc71;
+  font-size: 1.1em;
+}
+
+.guests {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.guests:before {
+  content: "👥";
+  margin-right: 5px;
+}
+
+.dietary-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.dietary-tag {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  transition: all 0.3s;
+}
+
+.dinner-card:hover .dietary-tag {
+  background: #c8e6c9;
+  transform: translateY(-2px);
+}
+
+.btn-book {
+  width: 100%;
+  padding: 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: auto;
+  font-weight: 600;
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-book:hover:not(:disabled) {
+  background: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.btn-book:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.dinner-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  cursor: pointer;
+} 

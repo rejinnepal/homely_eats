@@ -1,0 +1,59 @@
+<div class="dinner-listings-container">
+  <h2>Available Dinner Experiences</h2>
+
+  <div class="filters">
+    <!-- Add filters here later -->
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Loading dinner listings...
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="dinner-grid" *ngIf="!loading && !error">
+    <div class="dinner-card" *ngFor="let dinner of dinners">
+      <a [routerLink]="['/dinners', dinner._id]" class="dinner-link">
+        <img [src]="getDinnerImage(dinner)" [alt]="dinner.title">
+        <div class="dinner-info">
+          <h3>
+            <span class="dinner-title">{{ dinner.title }}</span>
+          </h3>
+          <p class="host">Hosted by {{ dinner.host?.name || 'Unknown Host' }}</p>
+          <p class="description">{{ dinner.description }}</p>
+          <div class="location">
+            <p>{{ getLocationDisplay(dinner.location) }}</p>
+          </div>
+          <div class="menu-preview" *ngIf="dinner.menu">
+            <h4>Menu Preview:</h4>
+            <ul>
+              <li *ngFor="let item of dinner.menu">{{ item.name }}</li>
+            </ul>
+          </div>
+          <div class="details">
+            <span class="date">{{ dinner.date | date:'MM/dd/yyyy' }}</span>
+            <span class="time">{{ dinner.time }}</span>
+            <span class="price">${{ dinner.price }}</span>
+          </div>
+          <div class="guests">
+            {{ dinner.currentGuests || 0 }}/{{ dinner.maxGuests }} guests
+          </div>
+          <div class="dietary-info" *ngIf="dinner.dietaryRestrictions && dinner.dietaryRestrictions.length > 0">
+            <span class="dietary-tag" *ngFor="let restriction of dinner.dietaryRestrictions">
+              {{ restriction }}
+            </span>
+          </div>
+        </div>
+      </a>
+      <button 
+        class="btn-book" 
+        [disabled]="dinner.status !== 'available' || !dinner._id" 
+        [routerLink]="['/dinners', dinner._id]"
+      >
+        {{ dinner.status === 'available' ? 'Book Now' : 'Fully Booked' }}
+      </button>
+    </div>
+  </div>
+</div> 

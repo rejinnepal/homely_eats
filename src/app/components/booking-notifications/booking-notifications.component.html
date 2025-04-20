@@ -1,0 +1,47 @@
+<div class="booking-notifications">
+  <div *ngIf="loading" class="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <mat-icon color="warn">error</mat-icon>
+    <span>{{ error }}</span>
+  </div>
+
+  <div *ngIf="!loading && !error" class="bookings-list">
+    <div *ngIf="pendingBookings.length === 0" class="no-bookings">
+      <mat-icon>info</mat-icon>
+      <span>No pending bookings</span>
+    </div>
+
+    <mat-card *ngFor="let booking of pendingBookings" class="booking-card">
+      <mat-card-header>
+        <mat-card-title class="booking-title">Booking Request</mat-card-title>
+        <mat-card-subtitle>
+          {{ booking.dinner?.title }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="booking-details">
+          <p><strong>Guest:</strong> {{ booking.guest?.name || 'Unknown Guest' }}</p>
+          <p><strong>Date:</strong> {{ booking.dinner?.date | date:'mediumDate' }}</p>
+          <p><strong>Time:</strong> {{ booking.dinner?.time }}</p>
+          <p><strong>Guests:</strong> {{ booking.numberOfGuests }}</p>
+          <p><strong>Status:</strong> {{ booking.status | titlecase }}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="approveBooking(booking._id!)" [disabled]="loading">
+          <mat-icon>check</mat-icon>
+          Approve
+        </button>
+        <button mat-button color="warn" (click)="rejectBooking(booking._id!)" [disabled]="loading">
+          <mat-icon>close</mat-icon>
+          Reject
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div> 

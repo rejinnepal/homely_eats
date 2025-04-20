@@ -1,0 +1,251 @@
+<div class="dinner-form-container">
+  <h2>Create a New Dinner</h2>
+  
+  <form [formGroup]="dinnerForm" (ngSubmit)="onSubmit()" class="dinner-form">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" formControlName="title" class="form-control">
+      <div class="error" *ngIf="dinnerForm.get('title')?.touched && dinnerForm.get('title')?.errors?.['required']">
+        Title is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('title')?.touched && dinnerForm.get('title')?.errors?.['minlength']">
+        Title must be at least 3 characters
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
+      <div class="error" *ngIf="dinnerForm.get('description')?.touched && dinnerForm.get('description')?.errors?.['required']">
+        Description is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('description')?.touched && dinnerForm.get('description')?.errors?.['minlength']">
+        Description must be at least 10 characters
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" formControlName="date" class="form-control">
+        <div class="error" *ngIf="dinnerForm.get('date')?.touched && dinnerForm.get('date')?.errors?.['required']">
+          Date is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Time</label>
+        <input type="time" id="time" formControlName="time" class="form-control">
+        <div class="error" *ngIf="dinnerForm.get('time')?.touched && dinnerForm.get('time')?.errors?.['required']">
+          Time is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Price per Person</label>
+        <input type="number" id="price" formControlName="price" class="form-control" min="0">
+        <div class="error" *ngIf="dinnerForm.get('price')?.touched && dinnerForm.get('price')?.errors?.['required']">
+          Price is required
+        </div>
+        <div class="error" *ngIf="dinnerForm.get('price')?.touched && dinnerForm.get('price')?.errors?.['min']">
+          Price must be greater than 0
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="maxGuests">Maximum Guests</label>
+        <input type="number" id="maxGuests" formControlName="maxGuests" class="form-control" min="1">
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.touched && dinnerForm.get('maxGuests')?.errors?.['required']">
+          Maximum guests is required
+        </div>
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.touched && dinnerForm.get('maxGuests')?.errors?.['min']">
+          Maximum guests must be at least 1
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" formControlName="location" class="form-control">
+      <div class="error" *ngIf="dinnerForm.get('location')?.touched && dinnerForm.get('location')?.errors?.['required']">
+        Location is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cuisine">Cuisine Type</label>
+      <select id="cuisine" formControlName="cuisine" class="form-control">
+        <option value="">Select a cuisine</option>
+        <option value="italian">Italian</option>
+        <option value="mexican">Mexican</option>
+        <option value="indian">Indian</option>
+        <option value="chinese">Chinese</option>
+        <option value="japanese">Japanese</option>
+        <option value="thai">Thai</option>
+        <option value="mediterranean">Mediterranean</option>
+        <option value="american">American</option>
+        <option value="french">French</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="error" *ngIf="dinnerForm.get('cuisine')?.touched && dinnerForm.get('cuisine')?.errors?.['required']">
+        Cuisine type is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dietaryRestrictions">Dietary Restrictions</label>
+      <input type="text" id="dietaryRestrictions" formControlName="dietaryRestrictions" class="form-control" 
+             placeholder="e.g., Vegetarian, Vegan, Gluten-free">
+    </div>
+
+    <div class="form-group">
+      <label for="specialRequirements">Special Requirements</label>
+      <textarea id="specialRequirements" formControlName="specialRequirements" class="form-control" rows="2"
+                placeholder="Any special requirements or notes for guests"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="images">Images</label>
+      <input type="file" id="images" (change)="onImageSelect($event)" class="form-control" multiple accept="image/*">
+      <div class="image-preview" *ngIf="previewUrls.length > 0">
+        <div class="preview-container" *ngFor="let url of previewUrls">
+          <img [src]="url" alt="Preview" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <button type="submit" class="submit-button" [disabled]="!dinnerForm.valid || isSubmitting">
+      {{ isSubmitting ? 'Creating...' : 'Create Dinner' }}
+<div class="dinner-form-container">
+  <h2>Create a New Dinner</h2>
+  
+  <form [formGroup]="dinnerForm" (ngSubmit)="onSubmit()" class="dinner-form">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" formControlName="title" class="form-control">
+      <div class="error" *ngIf="dinnerForm.get('title')?.touched && dinnerForm.get('title')?.errors?.['required']">
+        Title is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('title')?.touched && dinnerForm.get('title')?.errors?.['minlength']">
+        Title must be at least 3 characters
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
+      <div class="error" *ngIf="dinnerForm.get('description')?.touched && dinnerForm.get('description')?.errors?.['required']">
+        Description is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('description')?.touched && dinnerForm.get('description')?.errors?.['minlength']">
+        Description must be at least 10 characters
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" formControlName="date" class="form-control">
+        <div class="error" *ngIf="dinnerForm.get('date')?.touched && dinnerForm.get('date')?.errors?.['required']">
+          Date is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Time</label>
+        <input type="time" id="time" formControlName="time" class="form-control">
+        <div class="error" *ngIf="dinnerForm.get('time')?.touched && dinnerForm.get('time')?.errors?.['required']">
+          Time is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Price per Person</label>
+        <input type="number" id="price" formControlName="price" class="form-control" min="0">
+        <div class="error" *ngIf="dinnerForm.get('price')?.touched && dinnerForm.get('price')?.errors?.['required']">
+          Price is required
+        </div>
+        <div class="error" *ngIf="dinnerForm.get('price')?.touched && dinnerForm.get('price')?.errors?.['min']">
+          Price must be greater than 0
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="maxGuests">Maximum Guests</label>
+        <input type="number" id="maxGuests" formControlName="maxGuests" class="form-control" min="1">
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.touched && dinnerForm.get('maxGuests')?.errors?.['required']">
+          Maximum guests is required
+        </div>
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.touched && dinnerForm.get('maxGuests')?.errors?.['min']">
+          Maximum guests must be at least 1
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" formControlName="location" class="form-control">
+      <div class="error" *ngIf="dinnerForm.get('location')?.touched && dinnerForm.get('location')?.errors?.['required']">
+        Location is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cuisine">Cuisine Type</label>
+      <select id="cuisine" formControlName="cuisine" class="form-control">
+        <option value="">Select a cuisine</option>
+        <option value="italian">Italian</option>
+        <option value="mexican">Mexican</option>
+        <option value="indian">Indian</option>
+        <option value="chinese">Chinese</option>
+        <option value="japanese">Japanese</option>
+        <option value="thai">Thai</option>
+        <option value="mediterranean">Mediterranean</option>
+        <option value="american">American</option>
+        <option value="french">French</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="error" *ngIf="dinnerForm.get('cuisine')?.touched && dinnerForm.get('cuisine')?.errors?.['required']">
+        Cuisine type is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dietaryRestrictions">Dietary Restrictions</label>
+      <input type="text" id="dietaryRestrictions" formControlName="dietaryRestrictions" class="form-control" 
+             placeholder="e.g., Vegetarian, Vegan, Gluten-free">
+    </div>
+
+    <div class="form-group">
+      <label for="specialRequirements">Special Requirements</label>
+      <textarea id="specialRequirements" formControlName="specialRequirements" class="form-control" rows="2"
+                placeholder="Any special requirements or notes for guests"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="images">Images</label>
+      <input type="file" id="images" (change)="onImageSelect($event)" class="form-control" multiple accept="image/*">
+      <div class="image-preview" *ngIf="previewUrls.length > 0">
+        <div class="preview-container" *ngFor="let url of previewUrls">
+          <img [src]="url" alt="Preview" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <button type="submit" class="submit-button" [disabled]="!dinnerForm.valid || isSubmitting">
+      {{ isSubmitting ? 'Creating...' : 'Create Dinner' }}
+    </button>
+  </form>
+</div> 

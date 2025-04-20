@@ -1,0 +1,82 @@
+<div class="my-listings-container">
+  <h1>My Dinner Listings</h1>
+
+  <div class="tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'upcoming'"
+      (click)="setActiveTab('upcoming')"
+    >
+      Upcoming Listings
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'past'"
+      (click)="setActiveTab('past')"
+    >
+      Past Listings
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    Loading your listings...
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="no-listings" *ngIf="!isLoading && !error && (!dinners || dinners.length === 0)">
+    <p>You haven't created any dinner listings yet.</p>
+    <a routerLink="/create-dinner" class="btn-browse">Create Your First Listing</a>
+  </div>
+
+  <div class="no-listings" *ngIf="!isLoading && !error && getFilteredDinners().length === 0">
+    <p>You don't have any {{ activeTab }} listings.</p>
+    <a *ngIf="activeTab === 'upcoming'" routerLink="/create-dinner" class="btn-browse">Create a New Listing</a>
+  </div>
+
+  <div class="listings-list" *ngIf="!isLoading && !error && getFilteredDinners().length > 0">
+    <div class="listing-card" *ngFor="let dinner of getFilteredDinners()">
+      <div class="listing-header">
+        <h3>{{ dinner.title }}</h3>
+        <span class="listing-status" [class.status-available]="dinner.status === 'available'"
+              [class.status-unavailable]="dinner.status !== 'available'">
+          {{ dinner.status | titlecase }}
+        </span>
+      </div>
+
+      <div class="listing-details">
+        <div class="detail-row">
+          <span class="label">Date:</span>
+          <span class="value">{{ dinner.date | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Time:</span>
+          <span class="value">{{ dinner.time }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Location:</span>
+          <span class="value">{{ getLocationDisplay(dinner.location) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Guests:</span>
+          <span class="value">{{ dinner.currentGuests }}/{{ dinner.maxGuests }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Price:</span>
+          <span class="value">${{ dinner.price }} per guest</span>
+        </div>
+      </div>
+
+      <div class="listing-actions">
+        <button class="btn-view" (click)="editDinner(dinner._id!)">Edit</button>
+        <button class="btn-cancel" (click)="deleteDinner(dinner._id!)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="create-dinner-button">
+    <a routerLink="/create-dinner" class="btn-primary">Create New Dinner</a>
+  </div>
+</div>

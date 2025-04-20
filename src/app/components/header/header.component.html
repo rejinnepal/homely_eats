@@ -1,0 +1,67 @@
+<header class="header" [class.hidden]="!isNavbarVisible">
+  <div class="container">
+    <a routerLink="/" class="logo">
+      <h1>HomelyEats</h1>
+    </a>
+
+    <nav class="nav" [class.active]="isMenuOpen">
+      <ul class="nav-list">
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+        <li><a routerLink="/dinners" routerLinkActive="active">Find Dinners</a></li>
+        
+        <!-- Show different menu items based on user role -->
+        <ng-container *ngIf="currentUser">
+          <!-- Host menu items -->
+          <li *ngIf="currentUser.activeRole === 'host'">
+            <a routerLink="/my-listings" routerLinkActive="active">My Listings</a>
+          </li>
+          <li *ngIf="currentUser.activeRole === 'host'">
+            <a routerLink="/booking-notifications" routerLinkActive="active" class="notifications-link">
+              <!-- <mat-icon>notifications</mat-icon> -->
+               Booking Requests
+              <span class="notification-badge" *ngIf="pendingBookingsCount > 0">{{ pendingBookingsCount }}</span>
+            </a>
+          </li>
+          
+          <!-- Guest menu items -->
+          <li *ngIf="currentUser.activeRole === 'user'">
+            <a routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
+          </li>
+          <li *ngIf="currentUser.activeRole === 'user' && !currentUser.roles?.includes('host')">
+            <a routerLink="/host" routerLinkActive="active">Become a Host</a>
+          </li>
+          
+          <!-- Account menu item (visible to all logged-in users) -->
+          <li>
+            <a routerLink="/profile" routerLinkActive="active">My Account</a>
+          </li>
+        </ng-container>
+        
+        <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="auth-buttons">
+      <ng-container *ngIf="currentUser && currentUser.name; else loginButtons">
+        <span class="welcome-text">Welcome, {{ currentUser.name }}!</span>
+        <!-- Show role switcher for users with multiple roles -->
+        <app-role-switcher *ngIf="currentUser.roles && currentUser.roles.length > 1"></app-role-switcher>
+        <!-- Add notification bell -->
+        <app-notification-bell></app-notification-bell>
+        <button class="btn btn-outline" (click)="logout()">Logout</button>
+      </ng-container>
+      <ng-template #loginButtons>
+        <a routerLink="/login" class="btn btn-outline">Log In</a>
+        <a routerLink="/signup" class="btn btn-primary">Sign Up</a>
+      </ng-template>
+    </div>
+
+    <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<app-notification></app-notification>

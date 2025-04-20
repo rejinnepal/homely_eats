@@ -1,0 +1,62 @@
+<div class="dev-logger-container">
+  <div class="logger-header">
+    <h2>Development Logger</h2>
+    <div class="logger-controls">
+      <div class="log-level-controls">
+        <button 
+          [class.active]="showDebug" 
+          (click)="showDebug = !showDebug" 
+          class="level-btn debug-btn">
+          DEBUG
+        </button>
+        <button 
+          [class.active]="showInfo" 
+          (click)="showInfo = !showInfo" 
+          class="level-btn info-btn">
+          INFO
+        </button>
+        <button 
+          [class.active]="showWarn" 
+          (click)="showWarn = !showWarn" 
+          class="level-btn warn-btn">
+          WARN
+        </button>
+        <button 
+          [class.active]="showError" 
+          (click)="showError = !showError" 
+          class="level-btn error-btn">
+          ERROR
+        </button>
+      </div>
+      <div class="action-controls">
+        <button (click)="clearLogs()" class="action-btn">Clear</button>
+        <button (click)="exportLogs()" class="action-btn">Export</button>
+        <button 
+          [class.active]="autoScroll" 
+          (click)="toggleAutoScroll()" 
+          class="action-btn">
+          Auto-scroll
+        </button>
+      </div>
+    </div>
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchText" 
+        placeholder="Search logs..." 
+        class="search-input">
+    </div>
+  </div>
+  
+  <div class="log-container" #logContainer>
+    <div 
+      *ngFor="let log of getFilteredLogs()" 
+      [class]="getLogClass(log)" 
+      class="log-entry">
+      <pre>{{ log }}</pre>
+    </div>
+    <div *ngIf="getFilteredLogs().length === 0" class="no-logs">
+      No logs to display
+    </div>
+  </div>
+</div> 

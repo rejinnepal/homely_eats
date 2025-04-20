@@ -1,0 +1,134 @@
+<div class="profile-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadUserProfile()">Try Again</button>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="!isLoading && !error && user" class="profile-content">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <img [src]="user.profileImage || 'assets/images/default-profile.png'" 
+             alt="Profile Image" 
+             class="profile-image">
+        <input type="file" 
+               accept="image/*" 
+               (change)="onFileSelected($event)" 
+               #fileInput 
+               style="display: none">
+        <button mat-icon-button 
+                color="primary" 
+                (click)="fileInput.click()" 
+                class="edit-image-button">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      </div>
+      <div class="profile-info">
+        <h1>{{ user.name }}</h1>
+        <p class="email">{{ user.email }}</p>
+        <p class="role">Role: {{ user.roles }}</p>
+      </div>
+    </div>
+
+    <!-- Profile Details -->
+    <mat-card class="profile-details">
+      <mat-card-header>
+        <mat-card-title>Profile Information</mat-card-title>
+        <button mat-icon-button 
+                color="primary" 
+                (click)="isEditing ? saveProfile() : startEditing()">
+          <mat-icon>{{ isEditing ? 'save' : 'edit' }}</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="details-grid">
+          <!-- Name -->
+          <div class="detail-item">
+            <label>Name</label>
+            <div *ngIf="!isEditing">{{ user.name }}</div>
+            <mat-form-field *ngIf="isEditing" appearance="outline">
+              <input matInput [(ngModel)]="editedUser.name" placeholder="Your name">
+            </mat-form-field>
+          </div>
+
+          <!-- Email -->
+          <div class="detail-item">
+            <label>Email</label>
+            <div>{{ user.email }}</div>
+          </div>
+
+          <!-- Phone -->
+          <div class="detail-item">
+            <label>Phone</label>
+            <div *ngIf="!isEditing">{{ user.phone || 'Not provided' }}</div>
+            <mat-form-field *ngIf="isEditing" appearance="outline">
+              <input matInput [(ngModel)]="editedUser.phone" placeholder="Your phone number">
+            </mat-form-field>
+          </div>
+
+          <!-- Location -->
+          <div class="detail-item">
+            <label>Location</label>
+            <div *ngIf="!isEditing">{{ user.location || 'Not provided' }}</div>
+            <mat-form-field *ngIf="isEditing" appearance="outline">
+              <input matInput [(ngModel)]="editedUser.location" placeholder="Your location">
+            </mat-form-field>
+          </div>
+
+          <!-- Bio -->
+          <div class="detail-item full-width">
+            <label>Bio</label>
+            <div *ngIf="!isEditing">{{ user.bio || 'No bio provided' }}</div>
+            <mat-form-field *ngIf="isEditing" appearance="outline" class="full-width">
+              <textarea matInput 
+                        [(ngModel)]="editedUser.bio" 
+                        placeholder="Tell us about yourself"
+                        rows="4"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions *ngIf="isEditing" align="end">
+        <button mat-button (click)="cancelEditing()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="saveProfile()">Save Changes</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Account Statistics -->
+    <mat-card class="stats-card">
+      <mat-card-header>
+        <mat-card-title>Account Statistics</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <mat-icon>event</mat-icon>
+            <div class="stat-value">{{ user.createdAt | date }}</div>
+            <div class="stat-label">Member Since</div>
+          </div>
+          <div class="stat-item">
+            <mat-icon>restaurant</mat-icon>
+            <div class="stat-value">0</div>
+            <div class="stat-label">Dinners Attended</div>
+          </div>
+          <div class="stat-item">
+            <mat-icon>star</mat-icon>
+            <div class="stat-value">N/A</div>
+            <div class="stat-label">Average Rating</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 

@@ -1,0 +1,187 @@
+<div class="create-dinner-container">
+  <h2>Create Your Dinner Listing</h2>
+  
+  <form [formGroup]="dinnerForm" (ngSubmit)="onSubmit()" class="dinner-form">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        formControlName="title"
+        class="form-control"
+        placeholder="Enter a catchy title for your dinner"
+      >
+      <div class="error" *ngIf="dinnerForm.get('title')?.errors?.['required'] && dinnerForm.get('title')?.touched">
+        Title is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('title')?.errors?.['minlength'] && dinnerForm.get('title')?.touched">
+        Title must be at least 3 characters long
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="form-control"
+        rows="4"
+        placeholder="Describe your dinner experience..."
+      ></textarea>
+      <div class="error" *ngIf="dinnerForm.get('description')?.errors?.['required'] && dinnerForm.get('description')?.touched">
+        Description is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('description')?.errors?.['minlength'] && dinnerForm.get('description')?.touched">
+        Description must be at least 50 characters long
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input
+          type="date"
+          id="date"
+          formControlName="date"
+          class="form-control"
+        >
+        <div class="error" *ngIf="dinnerForm.get('date')?.errors?.['required'] && dinnerForm.get('date')?.touched">
+          Date is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Time</label>
+        <input
+          type="time"
+          id="time"
+          formControlName="time"
+          class="form-control"
+        >
+        <div class="error" *ngIf="dinnerForm.get('time')?.errors?.['required'] && dinnerForm.get('time')?.touched">
+          Time is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input
+        type="text"
+        id="location"
+        formControlName="location"
+        class="form-control"
+        placeholder="Enter the dinner location"
+      >
+      <div class="error" *ngIf="dinnerForm.get('location')?.errors?.['required'] && dinnerForm.get('location')?.touched">
+        Location is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="menu">Menu</label>
+      <textarea
+        id="menu"
+        formControlName="menu"
+        class="form-control"
+        rows="4"
+        placeholder="Describe your menu items..."
+      ></textarea>
+      <div class="error" *ngIf="dinnerForm.get('menu')?.errors?.['required'] && dinnerForm.get('menu')?.touched">
+        Menu is required
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cuisine">Cuisine Type</label>
+        <select
+          id="cuisine"
+          formControlName="cuisine"
+          class="form-control"
+        >
+          <option value="">Select a cuisine</option>
+          <option *ngFor="let cuisine of cuisines" [value]="cuisine">
+            {{ cuisine }}
+          </option>
+        </select>
+        <div class="error" *ngIf="dinnerForm.get('cuisine')?.errors?.['required'] && dinnerForm.get('cuisine')?.touched">
+          Cuisine type is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="maxGuests">Maximum Guests</label>
+        <input
+          type="number"
+          id="maxGuests"
+          formControlName="maxGuests"
+          class="form-control"
+          min="1"
+        >
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.errors?.['required'] && dinnerForm.get('maxGuests')?.touched">
+          Maximum guests is required
+        </div>
+        <div class="error" *ngIf="dinnerForm.get('maxGuests')?.errors?.['min'] && dinnerForm.get('maxGuests')?.touched">
+          Must be at least 1 guest
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price per Guest ($)</label>
+      <input
+        type="number"
+        id="price"
+        formControlName="price"
+        class="form-control"
+        min="0"
+        step="0.01"
+      >
+      <div class="error" *ngIf="dinnerForm.get('price')?.errors?.['required'] && dinnerForm.get('price')?.touched">
+        Price is required
+      </div>
+      <div class="error" *ngIf="dinnerForm.get('price')?.errors?.['min'] && dinnerForm.get('price')?.touched">
+        Price must be greater than 0
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Dietary Restrictions</label>
+      <div class="checkbox-group">
+        <div *ngFor="let restriction of dietaryRestrictions" class="checkbox-item">
+          <input
+            type="checkbox"
+            [id]="restriction"
+            [value]="restriction"
+            (change)="toggleDietaryRestriction($event, restriction)"
+          >
+          <label [for]="restriction">{{ restriction }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="images">Images</label>
+      <input
+        type="file"
+        id="images"
+        class="form-control"
+        multiple
+        accept="image/*"
+        (change)="onFileSelected($event)"
+      >
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" routerLink="/my-listings">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!dinnerForm.valid || isSubmitting">
+        {{ isSubmitting ? 'Creating...' : 'Create Dinner Listing' }}
+      </button>
+    </div>
+  </form>
+</div>

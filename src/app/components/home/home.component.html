@@ -1,0 +1,115 @@
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 *ngIf="!isAuthenticated">Connect Through the Joy of Food</h1>
+      <h1 *ngIf="isAuthenticated && isHost">Welcome Back, {{ currentUser?.name || 'Host' }}</h1>
+      <h1 *ngIf="isAuthenticated && !isHost">Welcome Back, {{ currentUser?.name || 'Guest' }}</h1>
+      
+      <p *ngIf="!isAuthenticated">Join HomelyEats to discover unique dining experiences and meet new friends over delicious meals.</p>
+      <p *ngIf="isAuthenticated && isHost">Manage your hosted dinners and connect with guests who share your passion for food.</p>
+      <p *ngIf="isAuthenticated && !isHost">Discover upcoming dinners and manage your bookings for unique dining experiences.</p>
+      
+      <div class="hero-buttons">
+        <a *ngIf="!isAuthenticated" routerLink="/dinners" class="btn-primary">Find Dinners</a>
+        <a *ngIf="!isAuthenticated" routerLink="/register" class="btn-secondary">Sign Up</a>
+        <a *ngIf="isAuthenticated && isHost" routerLink="/host/dinners" class="btn-primary">Manage Dinners</a>
+        <a *ngIf="isAuthenticated && isHost" routerLink="/host/bookings" class="btn-secondary">View Bookings</a>
+        <a *ngIf="isAuthenticated && !isHost" routerLink="/dinners" class="btn-primary">Find Dinners</a>
+        <a *ngIf="isAuthenticated && !isHost" routerLink="/my-bookings" class="btn-secondary">My Bookings</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="isLoading" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Loading content...</p>
+</div>
+
+<div *ngIf="error" class="error-container">
+  <p>{{ error }}</p>
+  <button mat-raised-button color="primary" (click)="loadPersonalizedContent()">Retry</button>
+</div>
+
+<div *ngIf="!isLoading && !error">
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">How HomelyEats Works</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>Discover</h3>
+          <p>Browse through a variety of dining experiences hosted by local food enthusiasts.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3>Book</h3>
+          <p>Reserve your spot at a dinner that interests you and matches your schedule.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <h3>Dine</h3>
+          <p>Enjoy a unique dining experience and connect with new people over delicious food.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <h3>Review</h3>
+          <p>Share your experience and help others discover great dining opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Our Users Say</h2>
+      <div class="testimonials-grid">
+        <mat-card *ngFor="let testimonial of testimonials" class="testimonial-card">
+          <mat-card-content>
+            <div class="rating">
+              <mat-icon *ngFor="let star of [].constructor(testimonial.rating)">star</mat-icon>
+            </div>
+            <p class="testimonial-text">"{{ testimonial.text }}"</p>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-footer>
+            <div class="testimonial-author">
+              <img [src]="testimonial.image" [alt]="testimonial.name" (error)="handleImageError($event)">
+              <h4>{{ testimonial.name }}</h4>
+            </div>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2 *ngIf="!isAuthenticated">Ready to Start Your Culinary Journey?</h2>
+        <h2 *ngIf="isAuthenticated && isHost">Want to Host More Dinners?</h2>
+        <h2 *ngIf="isAuthenticated && !isHost">Want to Become a Host?</h2>
+        
+        <p *ngIf="!isAuthenticated">Join our community of food lovers and hosts. Whether you're looking to enjoy a home-cooked meal or share your cooking passion, HomelyEats is the perfect platform for you.</p>
+        <p *ngIf="isAuthenticated && isHost">Create more dinner experiences and connect with food enthusiasts in your area.</p>
+        <p *ngIf="isAuthenticated && !isHost">Share your culinary passion with others and earn money by hosting dinners.</p>
+        
+        <div class="hero-buttons">
+          <a *ngIf="!isAuthenticated" routerLink="/register" class="btn-primary">Sign Up Now</a>
+          <a *ngIf="!isAuthenticated" routerLink="/host/register" class="btn-secondary">Become a Host</a>
+          <a *ngIf="isAuthenticated && isHost" routerLink="/host/dinners/create" class="btn-primary">Create New Dinner</a>
+          <a *ngIf="isAuthenticated && !isHost" routerLink="/host/register" class="btn-primary">Become a Host</a>
+          <a *ngIf="isAuthenticated" routerLink="/about" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> 

@@ -1,0 +1,88 @@
+<div class="booking-dialog-overlay" *ngIf="isOpen" (click)="closeDialog()">
+  <div class="booking-dialog" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <h2>{{ success ? 'Booking Confirmed' : (existingBooking ? 'Update Booking' : 'Book Dinner') }}</h2>
+      <button class="close-button" (click)="closeDialog()">&times;</button>
+    </div>
+
+    <div class="dialog-content" *ngIf="dinner">
+      <!-- Success Message -->
+      <div *ngIf="success" class="success-message">
+        <h3>{{ existingBooking ? 'Booking Updated!' : 'Booking Request Sent!' }}</h3>
+        <p>{{ existingBooking ? 'Your dinner booking has been updated.' : 'Your dinner booking request has been sent to the host. We will notify you once they approve your request.' }}</p>
+        
+        <div class="booking-details" *ngIf="bookingDetails">
+          <h4>Booking Details:</h4>
+          <div class="detail-row">
+            <span class="label">Dinner:&ensp;</span>
+            <span class="value">{{ dinner.title }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Date:&ensp;</span>
+            <span class="value">{{ bookingDetails.date | date:'MMMM d, yyyy' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Time:&ensp;</span>
+            <span class="value">{{ bookingDetails.time }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Number of Guests:&ensp;</span>
+            <span class="value">{{ bookingDetails.guestCount }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Total Price:&ensp;</span>
+            <span class="value">${{ bookingDetails.totalPrice }}</span>
+          </div>
+        </div>
+
+        <div class="next-steps">
+          <h4>Next Steps:</h4>
+          <p>1. The host will review your booking request</p>
+          <p>2. You'll receive a notification when they make a decision</p>
+          <p>3. You can check the status of your booking in "My Bookings"</p>
+        </div>
+
+        <button (click)="closeDialog()" class="btn btn-primary">Close</button>
+      </div>
+
+      <!-- Booking Form (only shown when not success) -->
+      <div *ngIf="!success">
+        <div class="dinner-summary">
+          <h3>{{ dinner.title }}</h3>
+          <p class="date">{{ dinner.date | date:'fullDate' }} at {{ dinner.time }}</p>
+          <p class="price">${{ dinner.price }} per person</p>
+        </div>
+
+        <div class="booking-form">
+          <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+              <mat-label>Number of Guests</mat-label>
+              <input matInput type="number" formControlName="guestCount" min="1" [max]="dinner.maxGuests || 10">
+              <mat-error *ngIf="bookingForm.get('guestCount')?.hasError('required')">
+                Number of guests is required
+              </mat-error>
+              <mat-error *ngIf="bookingForm.get('guestCount')?.hasError('min')">
+                Number of guests must be at least 1
+              </mat-error>
+              <mat-error *ngIf="bookingForm.get('guestCount')?.hasError('max')">
+                Number of guests cannot exceed {{ dinner.maxGuests }}
+              </mat-error>
+            </mat-form-field>
+
+            <div *ngIf="existingBooking" class="existing-booking-info">
+              <p>You already have a {{ existingBooking.status }} booking for this dinner with {{ existingBooking.numberOfGuests }} guests.</p>
+              <p>Updating the number of guests will modify your existing booking.</p>
+            </div>
+
+            <div class="actions">
+              <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid || isSubmitting">
+                {{ isSubmitting ? 'Processing...' : (existingBooking ? 'Update Booking' : 'Confirm Booking') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

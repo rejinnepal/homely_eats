@@ -1,0 +1,148 @@
+<div class="host-profile-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading host profile...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" routerLink="/dinners">Back to Dinners</button>
+  </div>
+
+  <!-- Host Profile Content -->
+  <div *ngIf="!loading && !error && host" class="host-profile-content">
+    <!-- Host Info Card -->
+    <mat-card class="host-info-card">
+      <div class="host-header">
+        <img [src]="host.imageUrl || 'assets/images/default-profile.png'" 
+             [alt]="host.name" 
+             class="host-profile-image">
+        <div class="host-header-info">
+          <h1>{{ host.name }}</h1>
+          <p class="location" *ngIf="host.location">
+            <mat-icon>location_on</mat-icon>
+            {{ host.location }}
+          </p>
+          <p class="phone" *ngIf="host.phone">
+            <mat-icon>phone</mat-icon>
+            {{ host.phone }}
+          </p>
+          <p class="member-since">
+            <mat-icon>calendar_today</mat-icon>
+            Member since {{ host.createdAt | date:'MMMM yyyy' }}
+          </p>
+          <div class="host-badges" *ngIf="host.isVerified">
+            <mat-chip-listbox>
+              <mat-chip color="primary" selected>
+                <mat-icon>verified</mat-icon>
+                Verified Host
+              </mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+      </div>
+
+      <!-- Host Stats -->
+      <!-- Displaying host statistics -->
+      <div class="host-stats">
+        <div class="stat-item">
+          <span class="stat-value" [ngClass]="getRatingColor(host.rating)">
+            {{ host.rating | number:'1.1-1' }}
+          </span>
+          <span class="stat-label">Average Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ host.reviewCount }}</span>
+          <span class="stat-label">Reviews</span>
+        </div>
+      </div>
+
+      <!-- Bio Section -->
+      <div class="bio-section" *ngIf="host.bio">
+        <h3>About {{ host.name.split(' ')[0] }}</h3>
+        <p>{{ host.bio }}</p>
+      </div>
+
+      <!-- Specialties Section -->
+      <div class="cuisine-section" *ngIf="host.specialties?.length">
+        <h3>Cuisine Specialties</h3>
+        <mat-chip-listbox>
+          <mat-chip *ngFor="let cuisine of host.specialties">{{ cuisine }}</mat-chip>
+        </mat-chip-listbox>
+      </div>
+    </mat-card>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section" *ngIf="reviews.length > 0">
+      <h2>Reviews</h2>
+      
+      <!-- Rating Summary -->
+      <div class="rating-summary">
+        <div class="average-rating">
+          <span class="rating-value" [ngClass]="getRatingColor(stats.averageRating)">
+            {{ stats.averageRating | number:'1.1-1' }}
+          </span>
+          <span class="total-reviews">({{ stats.totalReviews }} reviews)</span>
+        </div>
+        
+        <div class="rating-distribution">
+          <div *ngFor="let rating of [5,4,3,2,1]" class="rating-bar">
+            <span class="rating-label">{{ rating }}</span>
+            <div class="progress-bar">
+              <div class="progress" [style.width.%]="getRatingPercentage(rating)"></div>
+            </div>
+            <span class="rating-count">{{ getRatingCount(rating) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="reviews-list">
+        <mat-card *ngFor="let review of reviews" class="review-card">
+          <div class="review-header">
+            <span class="reviewer-name">{{ review.guest.name || 'Anonymous' }}</span>
+            <span class="review-date">{{ review.createdAt | date }}</span>
+          </div>
+          <div class="review-rating">
+            <mat-icon *ngFor="let star of [1,2,3,4,5]"
+                     [ngClass]="{'filled': star <= review.rating}">
+              star
+            </mat-icon>
+          </div>
+          <p class="review-text">{{ review.comment }}</p>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Upcoming Dinners Section -->
+    <div class="upcoming-dinners-section" *ngIf="upcomingDinners.length > 0">
+      <h2>Upcoming Dinners by {{ host.name.split(' ')[0] }}</h2>
+      <div class="dinners-grid">
+        <mat-card *ngFor="let dinner of upcomingDinners" class="dinner-card">
+          <img [src]="dinner.images?.[0] || 'assets/images/default-dinner.jpg'" 
+               [alt]="dinner.title" 
+               class="dinner-image">
+          <mat-card-content>
+            <h3>{{ dinner.title }}</h3>
+            <p class="dinner-date">
+              <mat-icon>event</mat-icon>
+              {{ dinner.date | date:'MMM d, yyyy' }}
+            </p>
+            <p class="dinner-price">
+              <mat-icon>attach_money</mat-icon>
+              {{ dinner.price | currency }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" [routerLink]="['/dinners', dinner._id]">
+              View Details
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div> 

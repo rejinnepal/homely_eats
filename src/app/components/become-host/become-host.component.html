@@ -1,0 +1,40 @@
+<div class="become-host-container">
+  <div class="become-host-content">
+    <h1>Become a Host</h1>
+    
+    <div class="info-section">
+      <h2>Share Your Culinary Passion</h2>
+      <p>Join our community of food enthusiasts and share your cooking skills with guests from around the world.</p>
+      
+      <div class="benefits">
+        <h3>Benefits of Being a Host</h3>
+        <ul>
+          <li>Share your passion for cooking with others</li>
+          <li>Earn money doing what you love</li>
+          <li>Connect with food enthusiasts</li>
+          <li>Build your culinary reputation</li>
+          <li>Flexible scheduling</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="action-section">
+      <div class="success-message" *ngIf="success">
+        <h3>Congratulations!</h3>
+        <p>You are now a host on Homely Eats. Redirecting you to your listings...</p>
+      </div>
+      
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+      
+      <button 
+        class="btn-become-host" 
+        (click)="becomeHost()" 
+        [disabled]="isSubmitting || success"
+      >
+        {{ isSubmitting ? 'Processing...' : 'Become a Host' }}
+      </button>
+    </div>
+  </div>
+</div> 

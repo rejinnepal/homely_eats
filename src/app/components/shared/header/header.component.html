@@ -1,0 +1,40 @@
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/">
+        <span class="logo-text">HomelyEats</span>
+      </a>
+    </div>
+
+    <nav class="desktop-nav">
+      <ul>
+        <li><a routerLink="/dinners" routerLinkActive="active">Dinners</a></li>
+        <li><a routerLink="/host" routerLinkActive="active">Become a Host</a></li>
+        <li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
+        <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="auth-buttons">
+      <a routerLink="/login" class="btn-login">Log In</a>
+      <a routerLink="/signup" class="btn-signup">Sign Up</a>
+    </div>
+
+    <button class="mobile-menu-btn" (click)="toggleMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+
+  <div class="mobile-nav" [class.open]="isMenuOpen">
+    <ul>
+      <li><a routerLink="/dinners" routerLinkActive="active">Dinners</a></li>
+      <li><a routerLink="/host" routerLinkActive="active">Become a Host</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/login" routerLinkActive="active">Log In</a></li>
+      <li><a routerLink="/signup" routerLinkActive="active">Sign Up</a></li>
+    </ul>
+  </div>
+</header> 

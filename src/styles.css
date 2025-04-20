@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Add this at the top of the file */
+:root {
+  --navbar-height: 80px; /* Updated to match header height */
+  --content-spacing: 2rem;
+}
+
+/* Global styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f5f5;
+}
+
+body {
+  padding-top: var(--navbar-height); /* Add padding to body instead of individual containers */
+}
+
+/* Main content wrapper */
+.main-content {
+  min-height: calc(100vh - var(--navbar-height));
+  width: 100%;
+  padding: var(--content-spacing);
+  position: relative;
+  z-index: 1;
+}
+
+/* Add some basic spacing utilities */
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 2rem; }
+
+/* Container styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 70px; /* Smaller header on mobile */
+    --content-spacing: 1rem;
+  }
+}

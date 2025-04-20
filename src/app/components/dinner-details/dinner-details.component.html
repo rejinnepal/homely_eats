@@ -1,0 +1,88 @@
+<div class="main-content-container">
+  <div class="dinner-details-container" *ngIf="!loading && !error && dinner; else loadingOrError">
+    <div class="dinner-header">
+      <h1>{{ dinner.title }}</h1>
+      <div class="host-info">
+        <p>Hosted by <a [routerLink]="['/hosts', dinner.host?._id]">{{ dinner.host?.name || 'Unknown Host' }}</a></p>
+      </div>
+    </div>
+
+    <div class="dinner-content">
+      <div class="main-content">
+        <div class="dinner-image">
+          <img [src]="getDinnerImage(dinner)" [alt]="dinner.title">
+        </div>
+
+        <div class="description-section">
+          <h3>About this dinner</h3>
+          <p class="description">{{ dinner.description }}</p>
+        </div>
+
+        <div class="menu-section" *ngIf="dinner.menu && dinner.menu.length > 0">
+          <h3>Menu</h3>
+          <div class="menu-items">
+            <div class="menu-item" *ngFor="let item of dinner.menu">
+              <h4>{{ item.name }}</h4>
+              <p *ngIf="item.description">{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="info-card">
+          <div class="info-section">
+            <h3>Date & Time</h3>
+            <p class="date">{{ dinner.date | date:'fullDate' }}</p>
+            <p class="time">{{ dinner.time }}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Location</h3>
+            <p>{{ getLocationDisplay(dinner.location) }}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Price</h3>
+            <p class="price">${{ dinner.price }} per person</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Availability</h3>
+            <p>{{ dinner.currentGuests || 0 }}/{{ dinner.maxGuests }} guests booked</p>
+          </div>
+
+          <div class="info-section" *ngIf="dinner.dietaryRestrictions && dinner.dietaryRestrictions.length > 0">
+            <h3>Dietary Restrictions</h3>
+            <div class="dietary-tags">
+              <span class="dietary-tag" *ngFor="let restriction of dinner.dietaryRestrictions">
+                {{ restriction }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="booking-section" *ngIf="dinner">
+      <button class="btn-book" (click)="openBookingDialog()" [disabled]="!isDinnerAvailable()">
+        {{ isDinnerAvailable() ? 'Book Now' : 'Fully Booked' }}
+      </button>
+    </div>
+  </div>
+
+  <ng-template #loadingOrError>
+    <div class="loading" *ngIf="loading">Loading dinner details...</div>
+    <div class="error" *ngIf="error">
+      <p>{{ error }}</p>
+      <button routerLink="/dinners">Back to Dinner Listings</button>
+    </div>
+  </ng-template>
+
+  <app-booking-dialog 
+    [dinner]="dinner" 
+    [isOpen]="showBookingDialog"
+    (close)="closeBookingDialog()"
+    (bookingComplete)="onBookingComplete()"
+  ></app-booking-dialog>
+</div> 

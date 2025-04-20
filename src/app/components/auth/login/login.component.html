@@ -1,0 +1,91 @@
+<div class="login-container">
+  <h2>Welcome Back to HomelyEats</h2>
+  
+  <!-- Login Form -->
+  <form *ngIf="!showRoleSelection" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="form-control"
+        placeholder="Enter your email"
+      >
+      <div class="error" *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">
+        Email is required
+      </div>
+      <div class="error" *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.touched">
+        Please enter a valid email
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="form-control"
+        placeholder="Enter your password"
+      >
+      <div class="error" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+        Password is required
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <button type="submit" [disabled]="!loginForm.valid || isLoading" class="btn-login">
+      <span *ngIf="!isLoading">Login</span>
+      <span *ngIf="isLoading">Logging in...</span>
+    </button>
+
+    <div class="signup-link">
+      Don't have an account? <a routerLink="/signup">Sign up</a>
+    </div>
+  </form>
+  
+  <!-- Role Selection (shown only if user has multiple roles) -->
+  <div *ngIf="showRoleSelection" class="role-selection-container">
+    <h3>Welcome, {{ authenticatedUser?.name }}!</h3>
+    <p>You have access to multiple roles. How would you like to continue?</p>
+    
+    <div class="role-buttons">
+      <button 
+        type="button" 
+        class="role-button" 
+        [class.active]="selectedRole === 'user'"
+        (click)="setRole('user')"
+        [disabled]="isLoading"
+      >
+        Continue as Guest
+      </button>
+      <button 
+        type="button" 
+        class="role-button" 
+        [class.active]="selectedRole === 'host'"
+        (click)="setRole('host')"
+        [disabled]="isLoading"
+      >
+        Continue as Host
+      </button>
+    </div>
+    
+    <div class="role-description">
+      <p *ngIf="selectedRole === 'user'">
+        As a guest, you can browse and book dinner experiences.
+      </p>
+      <p *ngIf="selectedRole === 'host'">
+        As a host, you can create and manage dinner listings.
+      </p>
+    </div>
+    
+    <button (click)="confirmRoleSelection()" class="btn-continue" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Continue</span>
+      <span *ngIf="isLoading">Switching role...</span>
+    </button>
+  </div>
+</div> 

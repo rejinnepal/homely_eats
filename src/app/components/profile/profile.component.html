@@ -1,0 +1,140 @@
+<div class="profile-container">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" routerLink="/dinners">Back to Dinners</button>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="profile-content" *ngIf="!isLoading && !error">
+    <!-- Profile Image Section -->
+    <div class="profile-image-section">
+      <img [src]="profileImage || 'assets/images/default-profile.png'" 
+           [alt]="user?.name + ' Profile Image'"
+           class="profile-image"
+           (error)="profileImage = 'assets/images/default-profile.png'">
+      <input type="file" 
+             accept="image/*" 
+             (change)="onImageUpload($event)" 
+             #fileInput 
+             style="display: none">
+      <button mat-raised-button 
+              color="primary" 
+              class="upload-button"
+              (click)="fileInput.click()"
+              *ngIf="!isEditing">
+        <mat-icon>photo_camera</mat-icon>
+        Change Photo
+      </button>
+    </div>
+
+    <!-- Profile Info Section -->
+    <div class="profile-info">
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <h1 class="profile-title">{{ user?.name }}</h1>
+        <span class="role-badge" [ngClass]="user?.activeRole">
+          {{ user?.activeRole | titlecase }}
+        </span>
+      </div>
+
+      <!-- View Mode -->
+      <div *ngIf="!isEditing">
+        <div class="profile-details">
+          <div class="detail-item">
+            <div class="detail-label">Email</div>
+            <div class="detail-value">{{ user?.email }}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Phone</div>
+            <div class="detail-value">{{ user?.phone || 'Not provided' }}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">{{ user?.location || 'Not provided' }}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Member Since</div>
+            <div class="detail-value">{{ user?.createdAt | date:'mediumDate' }}</div>
+          </div>
+        </div>
+
+        <div class="bio-section" *ngIf="user?.bio">
+          <div class="detail-label">About Me</div>
+          <div class="bio-content">{{ user?.bio }}</div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button 
+                  color="primary" 
+                  (click)="startEdit()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <form [formGroup]="profileForm" *ngIf="isEditing" (ngSubmit)="saveProfile()">
+        <div class="profile-form">
+          <mat-form-field class="form-field">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+              Name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone">
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location">
+          </mat-form-field>
+
+          <mat-form-field class="form-field bio-field">
+            <mat-label>Bio</mat-label>
+            <textarea matInput 
+                      formControlName="bio" 
+                      rows="4"
+                      placeholder="Tell us about yourself..."></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancelEdit()">
+            Cancel
+          </button>
+          <button mat-raised-button 
+                  color="primary" 
+                  type="submit"
+                  [disabled]="!profileForm.valid || profileForm.pristine">
+            <mat-icon>save</mat-icon>
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
