@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HomelyEats</title>
+    <script type="text/javascript">
+      // Get the current location
+      var l = window.location;
+      var baseUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/homely_eats';
+      
+      // Get the path after 'homely_eats'
+      var path = l.pathname;
+      var homely_eats_index = path.indexOf('/homely_eats');
+      if (homely_eats_index !== -1) {
+        path = path.substring(homely_eats_index + '/homely_eats'.length);
+      }
+      
+      // Remove leading and trailing slashes
+      path = path.replace(/^\/+|\/+$/g, '');
+      
+      // Construct the redirect URL
+      var redirectUrl = baseUrl + '/#/' + path;
+      
+      // Redirect
+      window.location.replace(redirectUrl);
+    </script>
+  </head>
+  <body>
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, please click <a id="redirect-link" href="">here</a>.</p>
+    <script>
+      // Update the fallback link
+      document.getElementById('redirect-link').href = baseUrl;
+    </script>
+  </body>
+</html> 
