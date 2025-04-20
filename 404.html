@@ -4,14 +4,20 @@
     <meta charset="utf-8">
     <title>HomelyEats</title>
     <script type="text/javascript">
-      // Redirect all 404s to index.html
-      var segmentCount = 1;
-      var location = window.location;
-      var baseUrl = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/homely_eats/';
-      window.location.href = baseUrl;
+      // Simple redirect to the base URL with hash routing
+      var pathSegments = window.location.pathname.split('/');
+      var basePathIndex = pathSegments.indexOf('homely_eats');
+      if (basePathIndex !== -1) {
+        var basePath = pathSegments.slice(0, basePathIndex + 1).join('/');
+        var remainingPath = pathSegments.slice(basePathIndex + 1).join('/');
+        window.location.replace(basePath + '/#/' + remainingPath);
+      } else {
+        window.location.replace('/homely_eats/#/');
+      }
     </script>
   </head>
   <body>
-    Redirecting...
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, please click <a href="/homely_eats/#/">here</a>.</p>
   </body>
 </html> 
